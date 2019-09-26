@@ -7,6 +7,11 @@ More information: http://www.pcg-random.org/
 
 C implementation: https://github.com/imneme/pcg-c-basic
 
+# Install
+Run the Nimble install command
+
+``nimble install pcgbasic``
+
 # Basic usage
 
 ```nim

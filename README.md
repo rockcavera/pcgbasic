@@ -9,7 +9,7 @@ C implementation: https://github.com/imneme/pcg-c-basic
 
 # Basic usage
 
-```
+```nim
 import pcgbasic, pcgbasic/utils
 
 let seedseq = genSeeds()

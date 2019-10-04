@@ -57,7 +57,7 @@ proc pcg32RandomR*(rng: var Pcg32Random): uint32 {.discardable.} =
   (xorshifted shr rot) or (xorshifted shl (-rot and 31))
 {.pop.}
 
-proc pcg32SRandomR*(rng: var Pcg32Random, initstate, initseq: uint64): void =
+proc pcg32SRandomR*(rng: var Pcg32Random, initstate, initseq: uint64) =
   ## Seed the rng.  Specified in two parts, state initializer and a sequence
   ## selection constant (a.k.a. stream id).
   rng.state = 0
@@ -76,7 +76,7 @@ proc pcg32BoundedRandR*(rng: var Pcg32Random, bound: uint32): uint32 =
     if r >= threshold:
       return r mod bound
 
-proc pcg32SRandom*(seed, seq: uint64): void =
+proc pcg32SRandom*(seed, seq: uint64) =
   ## Same as pcg32SRandomR(), but using global RNG.
   pcg32SRandomR(pcg32Global, seed, seq)
 

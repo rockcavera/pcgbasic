@@ -44,7 +44,7 @@ proc `-`(a: uint32): uint32 {.inline.} =
   not(a) + 1
 
 {.push rangeChecks: off.}
-proc pcg32RandomR*(rng: var Pcg32Random): uint32 {.discardable.} =
+proc pcg32RandomR*(rng: var Pcg32Random): uint32 {.discardable, inline.} =
   ## Generate a uniformly distributed 32-bit random number.
   let oldstate = rng.state
 
@@ -66,7 +66,7 @@ proc pcg32SRandomR*(rng: var Pcg32Random, initstate, initseq: uint64) =
   rng.state += initstate
   pcg32RandomR(rng)
 
-proc pcg32BoundedRandR*(rng: var Pcg32Random, bound: uint32): uint32 =
+proc pcg32BoundedRandR*(rng: var Pcg32Random, bound: uint32): uint32 {.inline.} =
   ## Generate a uniformly distributed number, r, where 0 <= r < bound.
   let threshold: uint32 = -bound mod bound
 
@@ -80,10 +80,10 @@ proc pcg32SRandom*(seed, seq: uint64) =
   ## Same as pcg32SRandomR(), but using global RNG.
   pcg32SRandomR(pcg32Global, seed, seq)
 
-proc pcg32Random*(): uint32 =
+proc pcg32Random*(): uint32 {.inline.} =
   ## Same as pcg32RandomR(), but using global RNG.
   pcg32RandomR(pcg32Global)
 
-proc pcg32BoundedRand*(bound: uint32): uint32 =
+proc pcg32BoundedRand*(bound: uint32): uint32 {.inline.} =
   ## Same as pcg32BoundedRandR(), but using global RNG.
   pcg32BoundedRandR(pcg32Global, bound)

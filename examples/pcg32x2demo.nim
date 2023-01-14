@@ -35,7 +35,7 @@ proc pcg32x2SRandomR(rng: var Pcg32x2Random, seed1, seed2, seq1, seq2: uint64):
   # The stream for each of the two generators *must* be distinct
   if (seq1 and mask) == (seq2x and mask):
     seq2x = not(seq2x)
-  
+
   pcg32SRandomR(rng.gen[0], seed1, seq1)
   pcg32SRandomR(rng.gen[1], seed2, seq2x)
 
@@ -52,7 +52,7 @@ proc pcg32x2BoundedRandR(rng: var Pcg32x2Random, bound: uint64): uint64 =
 
 # Read command-line options
 
-var 
+var
   rounds = 5
   nondeterministicSeed = false
 
@@ -94,7 +94,7 @@ for round in 1 .. rounds:
   var text: seq[string] = @[]
 
   echo "Round ", round, ":"
-  
+
   for i in 0 ..< 6:
     add(text, "0x" & toHex(pcg32x2RandomR(rng)))
   echo "  64bit: ", join(text, " ")
@@ -123,20 +123,20 @@ for round in 1 .. rounds:
     SUITS = 4
     # NUMBERS = 13
     CARDS = 52
-  
+
   var cards = newSeq[int](CARDS)
 
   for i in 0 ..< CARDS:
     cards[i] = i
-  
+
   for i in countdown(CARDS, 2):
     let
       chosen = int(pcg32x2BoundedRandR(rng, uint32(i)))
       card = cards[chosen]
-    
+
     cards[chosen] = cards[i - 1]
     cards[i - 1] = card
-  
+
   let
     number = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
     suit = ['h', 'c', 'd', 's']

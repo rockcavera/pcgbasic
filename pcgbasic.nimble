@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.2"
+version       = "0.1.3"
 author        = "rockcavera"
 description   = "Permuted Congruential Generator (PCG) Random Number Generation (RNG) for Nim."
 license       = "MIT"

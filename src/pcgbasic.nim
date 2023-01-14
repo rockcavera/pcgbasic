@@ -26,6 +26,7 @@
 ##
 ##   # Roll a six-sided dice
 ##   echo pcg32BoundedRandR(rng, 6'u32) + 1
+import ./pcgbasic/utils
 
 type
   Pcg32Random* = object
@@ -34,13 +35,13 @@ type
                 # *always* be odd.
 
 # If you *must* statically initialize it, here's one.
-let pcg32Initializer* = Pcg32Random(state: 0x853c49e6748fea9b'u64,
-                                    inc: 0xda3e39cb94b95bdb'u64)
+const pcg32Initializer* = Pcg32Random(state: 0x853c49e6748fea9b'u64,
+                                      inc: 0xda3e39cb94b95bdb'u64)
 
 var pcg32Global = pcg32Initializer # state for global RNGs
 
 # Operator unary minus
-proc `-`(a: uint32): uint32 {.inline.} =
+func `-`(a: uint32): uint32 {.inline.} =
   not(a) + 1
 
 {.push rangeChecks: off.}
@@ -53,7 +54,7 @@ proc pcg32RandomR*(rng: var Pcg32Random): uint32 {.discardable, inline.} =
   let
     xorshifted: uint32 = uint32(((oldstate shr 18) xor oldstate) shr 27)
     rot: uint32 = uint32(oldstate shr 59)
-  
+
   (xorshifted shr rot) or (xorshifted shl (-rot and 31))
 {.pop.}
 
@@ -87,3 +88,9 @@ proc pcg32Random*(): uint32 {.inline.} =
 proc pcg32BoundedRand*(bound: uint32): uint32 {.inline.} =
   ## Same as pcg32BoundedRandR(), but using global RNG.
   pcg32BoundedRandR(pcg32Global, bound)
+
+proc pcg32Randomize*() =
+  ## Change the state of the global RNG using the procedure `utils.genSeeds()`.
+  let ss = genSeeds()
+
+  pcg32SRandomR(pcg32Global, ss.seed, ss.seq)

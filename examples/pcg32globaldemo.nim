@@ -5,7 +5,7 @@ import pcgbasic, pcgbasic/utils
 # Run the program with the "-r" parameter to use random seeds.
 
 # Read command-line options
-var 
+var
   rounds = 5
   nondeterministicSeed = false
 
@@ -42,7 +42,7 @@ for round in 1 .. rounds:
   var text: seq[string] = @[]
 
   echo "Round ", round, ":"
-  
+
   for i in 0 ..< 6:
     add(text, "0x" & toHex(pcg32Random()))
   echo "  32bit: ", join(text, " ")
@@ -69,22 +69,22 @@ for round in 1 .. rounds:
 
   const
     SUITS = 4
-    # NUMBERS = 13 
+    # NUMBERS = 13
     CARDS = 52
-  
+
   var cards = newSeq[int](CARDS)
 
   for i in 0 ..< CARDS:
     cards[i] = i
-  
+
   for i in countdown(CARDS, 2):
     let
       chosen = int(pcg32BoundedRand(uint32(i)))
       card = cards[chosen]
-    
+
     cards[chosen] = cards[i - 1]
     cards[i - 1] = card
-  
+
   let
     number = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
     suit = ['h', 'c', 'd', 's']
